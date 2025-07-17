@@ -1,0 +1,14 @@
+{
+  "roots": [
+    "product_2"
+  ],
+  "packages": [
+    {
+      "name": "product_2",
+      "version": "1.0.0",
+      "dependencies": [],
+      "devDependencies": []
+    }
+  ],
+  "configVersion": 1
+}
