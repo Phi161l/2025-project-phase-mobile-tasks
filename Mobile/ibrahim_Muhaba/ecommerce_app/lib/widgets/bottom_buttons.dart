@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/product_model.dart';
-// import '../screens/add_update_screen.dart.dart';     // Fix typo `.dart.dart`
+import '../screens/add_update_screen.dart.dart';     // Fix typo `.dart.dart`
 
 class BottomButtons extends StatelessWidget {
   final Product product;
@@ -37,13 +37,13 @@ class BottomButtons extends StatelessWidget {
           Expanded(
             child: OutlinedButton(
               onPressed: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (_) =>
-                //         AddUpdateScreen(product: product), // Product passed
-                //   ),
-                // );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) =>
+                        AddUpdateScreen(product: product), // Product passed
+                  ),
+                );
               },
               style: OutlinedButton.styleFrom(
                 side: const BorderSide(color: Colors.blue),

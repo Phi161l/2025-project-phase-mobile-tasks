@@ -3,6 +3,7 @@ import '../widgets/custom_app_bar.dart';
 import '../widgets/product_card.dart';
 import '../data/products_data.dart';
 import '../widgets/floating_button.dart';
+import "../screens/search_screen.dart";
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -27,18 +28,28 @@ class HomeScreen extends StatelessWidget {
                     style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                   ),
                   const Spacer(),
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: Colors.white, // white background
-                      borderRadius: BorderRadius.circular(12), // Rounded edges
-                    ),
-                    child: const Icon(
-                      Icons.search,
-                      size: 24,
-                      color: Colors.grey,
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const SearchScreen()),
+                      );
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: const Icon(
+                        Icons.search,
+                        size: 24,
+                        color: Colors.grey,
+                      ),
                     ),
                   ),
+
                 ],
               ),
 
