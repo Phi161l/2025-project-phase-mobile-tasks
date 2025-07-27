@@ -1,16 +1,35 @@
-# ecommerce_app
+# E-commerce App UI (Flutter)
 
-A new Flutter project.
+This project is a **Flutter-based e-commerce mobile application** that showcases a clean and modern UI design for browsing, searching, viewing, and updating product details. The app was built as part of a learning internship and currently includes full layout and navigation functionality.
 
-## Getting Started
+## 🚀 Features Implemented
+- 🏠 **Home Screen**: Displays a list of product cards with search and notification icons.
+- 🔍 **Search Screen**: Includes a search bar, filter section, and scrollable product results.
+- 📄 **Details Screen**: Shows product image, description, size selector, and action buttons.
+- ✏️ **Update Screen**: A form-style layout for updating or adding new products.
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
+## 📸 UI Design Source
+The app layout is based on a provided Figma design and is built to match it as closely as possible using reusable widgets.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## 🛠️ Getting Started
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### Prerequisites
+- Flutter SDK installed
+- Android SDK (or iOS if developing for Apple devices)
+- An emulator or physical device
+
+### Run the App
+```bash
+git clone https://github.com/your-username/your-repo-name.git
+cd your-repo-name
+flutter pub get
+flutter run
+```
+
+## 👨‍💻 Author
+**Ibrahim Muhaba** – Flutter Developer Intern
+
+---
+
+Made with ❤️ as part of an internship learning path.
