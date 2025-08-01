@@ -1,91 +1,91 @@
-# 🧠 Domain Layer – Clean Architecture (Product Module)
+# 🛍️ E-Commerce App – Clean Architecture Overview
 
-This is the **Domain Layer** of the Product module, built using Clean Architecture principles.
-
----
-
-## 📚 What’s Inside
-
-- **Entities** – core business models
-- **Use Cases** – actions the app performs
-- **Repositories (abstract)** – contracts for data access
-
-The domain layer is pure Dart and contains no UI, database, or network code.
+This project is structured using **Clean Architecture** principles to improve scalability, testability, and separation of concerns. The current feature under refactor is the **Product** module.
 
 ---
 
-## 📦 Structure
+## 📦 Folder Structure
 
 ```
-domain/
-├── entities/            // Product model
-├── repositories/        // Abstract contract
-└── usecases/            // App-specific logic
-```
+lib/
+├── core/                  # Shared logic (e.g., error handling, constants)
+├── features/
+│   └── product/           # E-commerce product feature
+│       ├── domain/
+│       │   ├── entities/              # Core business objects (no dependencies)
+│       │   │   └── product.dart
+│       │   ├── repositories/          # Abstract contracts for data
+│       │   │   └── product_repository.dart
+│       │   └── usecases/              # Application-specific logic
+│       │       ├── create_product_usecase.dart
+│       │       ├── delete_product_usecase.dart
+│       │       ├── update_product_usecase.dart
+│       │       ├── view_all_products_usecase.dart
+│       │       └── view_product_usecase.dart
+│       └── data/
+│           └── models/                # Implementation of entities with JSON support
+│               └── product_model.dart
 
----
-
-## 🧱 Entity – `Product`
-
-```dart
-class Product {
-  final String id;
-  final String name;
-  final String description;
-  final double price;
-
-  Product({
-    required this.id,
-    required this.name,
-    required this.description,
-    required this.price,
-  });
-}
+test/
+└── features/
+    └── product/
+        └── data/
+            └── models/
+                └── product_model_test.dart
 ```
 
 ---
 
-## 🔌 Repository Contract
+## 🧱 Layers Overview
 
-```dart
-abstract class ProductRepository {
-  Future<List<Product>> getAllProducts();
-  Future<void> addProduct(Product product);
-  Future<void> updateProduct(Product product);
-  Future<void> deleteProduct(String id);
-}
+### 1. **Domain Layer**
+- Defines the `Product` entity representing core business logic.
+- Contains abstract `ProductRepository` for data access abstraction.
+- Implements all 5 use cases:
+  - `ViewAllProducts`
+  - `ViewProduct`
+  - `CreateProduct`
+  - `UpdateProduct`
+  - `DeleteProduct`
+
+### 2. **Data Layer**
+- Includes `ProductModel`, which extends the `Product` entity.
+- Adds `fromJson()` and `toJson()` for serialization/deserialization.
+- This layer will later include remote/local data sources and repository implementation.
+
+---
+
+## 🔁 Data Flow
+
+```
+API ⇄ ProductModel ⇄ Product (Entity) ⇄ UseCases ⇄ UI
 ```
 
-The actual logic will be implemented in the data layer.
+---
+
+## 🧪 Testing
+
+- ✅ Unit test added for `ProductModel` to verify serialization and deserialization logic.
+- Test files mirror the structure of the main code for easier maintenance.
 
 ---
 
-## 🚀 Use Cases
+## ✅ Status
 
-Each use case wraps one operation and delegates it to the repository.
-
-```dart
-class GetAllProductsUseCase {
-  final ProductRepository repository;
-  GetAllProductsUseCase(this.repository);
-
-  Future<List<Product>> call() => repository.getAllProducts();
-}
-```
-
-Similar structure is used for:
-
-- `AddProductUseCase`
-- `UpdateProductUseCase`
-- `DeleteProductUseCase`
+- [x] Domain layer implemented
+- [x] ProductModel completed
+- [x] Unit tested ProductModel
+- [ ] Repository implementation (next task)
+- [ ] Data source (coming later)
 
 ---
 
-## ✅ Summary
+## 📌 Notes
 
-- Clean, testable, and UI-independent
-- Defines **what** the app does
-- Leaves **how** to the data & presentation layers
+- The `product/` feature under `features/` follows Clean Architecture principles.
+- Refactor is being done incrementally while keeping the app functional.
+- All business rules are kept independent of frameworks or platforms.
 
 ---
+
 
