@@ -1,91 +1,62 @@
-# 🛍️ E-Commerce App – Clean Architecture Overview
+## ✅ Task 11: Contracts of Data Sources
 
-This project is structured using **Clean Architecture** principles to improve scalability, testability, and separation of concerns. The current feature under refactor is the **Product** module.
+### 🎯 Objective
+Refactor the domain layer of the Ecommerce app by creating clear contracts (abstract classes) for the repository and its data source dependencies, based on clean architecture principles.
 
 ---
 
-## 📦 Folder Structure
+### 📁 What Was Done
 
-```
-lib/
-├── core/                  # Shared logic (e.g., error handling, constants)
-├── features/
-│   └── product/           # E-commerce product feature
-│       ├── domain/
-│       │   ├── entities/              # Core business objects (no dependencies)
-│       │   │   └── product.dart
-│       │   ├── repositories/          # Abstract contracts for data
-│       │   │   └── product_repository.dart
-│       │   └── usecases/              # Application-specific logic
-│       │       ├── create_product_usecase.dart
-│       │       ├── delete_product_usecase.dart
-│       │       ├── update_product_usecase.dart
-│       │       ├── view_all_products_usecase.dart
-│       │       └── view_product_usecase.dart
-│       └── data/
-│           └── models/                # Implementation of entities with JSON support
-│               └── product_model.dart
+#### 1. Product Repository Contract (Domain Layer)
+Defined an abstract `ProductRepository` interface in `domain/repositories/product_repository.dart`:
 
-test/
-└── features/
-    └── product/
-        └── data/
-            └── models/
-                └── product_model_test.dart
+```dart
+abstract class ProductRepository {
+  Future<List<Product>> getAllProducts();
+  Future<Product?> getProductById(String id);
+  Future<void> createProduct(Product product);
+  Future<void> updateProduct(Product product);
+  Future<void> deleteProduct(String id);
+}
 ```
 
----
-
-## 🧱 Layers Overview
-
-### 1. **Domain Layer**
-- Defines the `Product` entity representing core business logic.
-- Contains abstract `ProductRepository` for data access abstraction.
-- Implements all 5 use cases:
-  - `ViewAllProducts`
-  - `ViewProduct`
-  - `CreateProduct`
-  - `UpdateProduct`
-  - `DeleteProduct`
-
-### 2. **Data Layer**
-- Includes `ProductModel`, which extends the `Product` entity.
-- Adds `fromJson()` and `toJson()` for serialization/deserialization.
-- This layer will later include remote/local data sources and repository implementation.
+This interface describes all the expected behaviors of a product repository in the app.
 
 ---
 
-## 🔁 Data Flow
+#### 2. Remote Data Source Contract
+Created `RemoteDataSource` abstract class in `data/datasources/remote_data_source.dart`:
 
-```
-API ⇄ ProductModel ⇄ Product (Entity) ⇄ UseCases ⇄ UI
+```dart
+abstract class RemoteDataSource {
+  Future<List<ProductModel>> fetchAllProducts();
+  Future<ProductModel?> fetchProductById(String id);
+  Future<void> createProduct(ProductModel product);
+  Future<void> updateProduct(ProductModel product);
+  Future<void> deleteProduct(String id);
+}
 ```
 
----
-
-## 🧪 Testing
-
-- ✅ Unit test added for `ProductModel` to verify serialization and deserialization logic.
-- Test files mirror the structure of the main code for easier maintenance.
+This defines how remote data (e.g., from an API) should be fetched and managed.
 
 ---
 
-## ✅ Status
+#### 3. Local Data Source Contract
+Created `LocalDataSource` abstract class in `data/datasources/local_data_source.dart`:
 
-- [x] Domain layer implemented
-- [x] ProductModel completed
-- [x] Unit tested ProductModel
-- [ ] Repository implementation (next task)
-- [ ] Data source (coming later)
+```dart
+abstract class LocalDataSource {
+  Future<List<ProductModel>> getCachedProducts();
+  Future<void> cacheProducts(List<ProductModel> products);
+}
+```
 
----
-
-## 📌 Notes
-
-- The `product/` feature under `features/` follows Clean Architecture principles.
-- Refactor is being done incrementally while keeping the app functional.
-- All business rules are kept independent of frameworks or platforms.
+This outlines how product data should be stored and retrieved locally (e.g., from SQLite or Hive).
 
 ---
 
+### ✅ Summary
+Task 11 focused only on defining contracts (interfaces) — no implementation logic was added yet. These contracts will help maintain a clean separation of concerns in the data layer and allow flexibility in switching data sources later.
+
+---
 
