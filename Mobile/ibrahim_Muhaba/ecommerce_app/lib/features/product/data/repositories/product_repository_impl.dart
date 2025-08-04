@@ -1,23 +1,24 @@
+import '../../../../core/network/network_info.dart'; // <-- ✅ Import the NetworkInfo
+import '../../domain/entities/product.dart';
+import '../../domain/repositories/product_repository.dart';
 import '../datasources/product_local_data_source.dart';
 import '../datasources/product_remote_data_source.dart';
 import '../models/product_model.dart';
-import '../../domain/entities/product.dart';
-import '../../domain/repositories/product_repository.dart';
 
 class ProductRepositoryImpl implements ProductRepository {
   final ProductRemoteDataSource remoteDataSource;
   final ProductLocalDataSource localDataSource;
-  final bool isConnected;
+  final NetworkInfo networkInfo; // ✅ Changed from bool isConnected
 
   ProductRepositoryImpl({
     required this.remoteDataSource,
     required this.localDataSource,
-    required this.isConnected,
+    required this.networkInfo,
   });
 
   @override
   Future<List<Product>> getAllProducts() async {
-    if (isConnected) {
+    if (await networkInfo.isConnected) {
       final remoteModels = await remoteDataSource.getAllProducts();
       await localDataSource.cacheProducts(remoteModels);
       return remoteModels.map((model) => model.toEntity()).toList();
@@ -29,7 +30,7 @@ class ProductRepositoryImpl implements ProductRepository {
 
   @override
   Future<Product?> getProductById(String id) async {
-    if (isConnected) {
+    if (await networkInfo.isConnected) {
       final model = await remoteDataSource.getProductById(id);
       return model.toEntity();
     } else {
@@ -41,7 +42,7 @@ class ProductRepositoryImpl implements ProductRepository {
   @override
   Future<void> createProduct(Product product) async {
     final model = ProductModel.fromEntity(product);
-    if (isConnected) {
+    if (await networkInfo.isConnected) {
       await remoteDataSource.addProduct(model);
     } else {
       await localDataSource.cacheProduct(model);
@@ -51,7 +52,7 @@ class ProductRepositoryImpl implements ProductRepository {
   @override
   Future<void> updateProduct(Product product) async {
     final model = ProductModel.fromEntity(product);
-    if (isConnected) {
+    if (await networkInfo.isConnected) {
       await remoteDataSource.updateProduct(model);
     } else {
       await localDataSource.cacheProduct(model);
@@ -60,7 +61,7 @@ class ProductRepositoryImpl implements ProductRepository {
 
   @override
   Future<void> deleteProduct(String id) async {
-    if (isConnected) {
+    if (await networkInfo.isConnected) {
       await remoteDataSource.deleteProduct(id);
     } else {
       await localDataSource.deleteCachedProduct(id);
