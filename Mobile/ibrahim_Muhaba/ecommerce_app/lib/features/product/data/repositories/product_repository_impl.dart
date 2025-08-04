@@ -13,7 +13,8 @@ class ProductRepositoryImpl implements ProductRepository {
   ProductRepositoryImpl({
     required this.remoteDataSource,
     required this.localDataSource,
-    required this.networkInfo,
+    required this.networkInfo, 
+    required bool isConnected,
   });
 
   @override

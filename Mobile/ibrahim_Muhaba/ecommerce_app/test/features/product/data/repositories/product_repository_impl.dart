@@ -1,9 +1,27 @@
 import 'package:flutter_test/flutter_test.dart';
 
+import '../../../../../lib/core/network/network_info.dart';
 import '../../../../../lib/features/product/data/datasources/product_local_data_source.dart';
 import '../../../../../lib/features/product/data/datasources/product_remote_data_source.dart';
 import '../../../../../lib/features/product/data/models/product_model.dart';
 import '../../../../../lib/features/product/data/repositories/product_repository_impl.dart';
+
+
+
+
+/// A simple Fake NetworkInfo for testing, allowing us to specify connection state
+class FakeNetworkInfo implements NetworkInfo {
+  final bool _isConnected;
+
+  FakeNetworkInfo(this._isConnected);
+
+  @override
+  Future<bool> get isConnected async => _isConnected;
+}
+
+
+
+
 
 class FakeRemoteDataSource implements ProductRemoteDataSource {
   final List<ProductModel> _products = [
@@ -44,6 +62,12 @@ class FakeRemoteDataSource implements ProductRemoteDataSource {
     _products.removeWhere((p) => p.id == id);
   }
 }
+
+
+
+
+
+
 
 class FakeLocalDataSource implements ProductLocalDataSource {
   final List<ProductModel> _cache = [
@@ -91,7 +115,8 @@ void main() {
       repository = ProductRepositoryImpl(
         remoteDataSource: FakeRemoteDataSource(),
         localDataSource: FakeLocalDataSource(),
-        isConnected: true,
+        networkInfo: FakeNetworkInfo(true),  // connected
+        isConnected: true, 
       );
 
       final result = await repository.getAllProducts();
@@ -104,7 +129,8 @@ void main() {
       repository = ProductRepositoryImpl(
         remoteDataSource: FakeRemoteDataSource(),
         localDataSource: FakeLocalDataSource(),
-        isConnected: false,
+        networkInfo: FakeNetworkInfo(false), // disconnected
+        isConnected: true,
       );
 
       final result = await repository.getAllProducts();
@@ -117,6 +143,7 @@ void main() {
       repository = ProductRepositoryImpl(
         remoteDataSource: FakeRemoteDataSource(),
         localDataSource: FakeLocalDataSource(),
+        networkInfo: FakeNetworkInfo(true),
         isConnected: true,
       );
 
@@ -129,7 +156,8 @@ void main() {
       repository = ProductRepositoryImpl(
         remoteDataSource: FakeRemoteDataSource(),
         localDataSource: FakeLocalDataSource(),
-        isConnected: false,
+        networkInfo: FakeNetworkInfo(false),
+        isConnected: true,
       );
 
       final result = await repository.getProductById('2');
@@ -142,6 +170,7 @@ void main() {
       repository = ProductRepositoryImpl(
         remoteDataSource: remote,
         localDataSource: FakeLocalDataSource(),
+        networkInfo: FakeNetworkInfo(true),
         isConnected: true,
       );
 
@@ -164,6 +193,7 @@ void main() {
       repository = ProductRepositoryImpl(
         remoteDataSource: remote,
         localDataSource: FakeLocalDataSource(),
+        networkInfo: FakeNetworkInfo(true),
         isConnected: true,
       );
 
@@ -187,6 +217,7 @@ void main() {
       repository = ProductRepositoryImpl(
         remoteDataSource: remote,
         localDataSource: FakeLocalDataSource(),
+        networkInfo: FakeNetworkInfo(true), 
         isConnected: true,
       );
 
