@@ -1,71 +1,63 @@
-# 📦 ProductLocalDataSourceImpl
+# 🧩 Task 15: Implement Remote Data Source
 
-This module implements local data storage for product data using `SharedPreferences`. It follows clean architecture principles, storing and retrieving data as `ProductModel` (data layer) only.
+This module implements the remote data source of the Ecommerce App following the clean architecture structure.
 
----
-
-## ✅ Features
-
-- Cache a single product
-- Cache a list of products
-- Retrieve a cached product by ID
-- Retrieve all cached products
-- Delete a cached product by ID
-
----
-
-## 📁 File Structure
+## 📂 File Structure
 
 ```
 lib/
-└── features/
-    └── product/
-        └── data/
-            └── datasources/
-                └── product_local_data_source_impl.dart
-
+└── data/
+    └── datasources/
+        └── product_remote_datasource_impl.dart
 test/
-└── features/
-    └── product/
-        └── data/
-            └── datasources/
-                └── product_local_data_source_impl_test.dart
+└── data/
+    └── datasources/
+        └── product_remote_datasource_impl_test.dart
 ```
 
----
+## 📌 Description
 
-## 🧪 Testing
+This task covers the implementation of the remote data source, `ProductRemoteDataSourceImpl`, which performs HTTP operations like fetching, adding, updating, and deleting products from the remote server.
 
-We use the `flutter_test` package and mock `SharedPreferences`:
+## 🔗 API Details
 
-### Test Scenarios
+- **Base URL**: ``
+- The API endpoints used are:
+  - `GET /products` – get all products
+  - `GET /products/{id}` – get a product by ID
+  - `POST /products` – add a product
+  - `PUT /products/{id}` – update a product
+  - `DELETE /products/{id}` – delete a product
 
-- ✅ Cache and retrieve a single product by ID
-- ✅ Cache and retrieve a list of products
-- ✅ Delete a product and expect an exception on retrieval
+## ✅ Implemented Methods
 
-### Run tests
+- `getAllProducts()`
+- `getProductById(String id)`
+- `addProduct(ProductModel product)`
+- `updateProduct(ProductModel product)`
+- `deleteProduct(String id)`
+
+All methods are implemented using the `http` package and return models or complete without error if successful.
+
+## 🧪 Test Coverage
+
+Tests are written using `mockito` and `test` to:
+- Verify correct HTTP method and endpoint usage
+- Handle successful responses
+- Handle error (non-200) responses
+
+Each method in the remote data source has a corresponding unit test.
+
+## 🚀 How to Run Tests
+
+Make sure dependencies are installed and run:
 
 ```bash
-flutter test test/features/product/data/datasources/product_local_data_source_impl_test.dart
+flutter test test/data/datasources/product_remote_datasource_impl_test.dart
 ```
 
----
+## ✅ Task Status
 
-## 📦 Dependencies
-
-- `shared_preferences`
-- `flutter_test`
-- `jsonEncode`, `jsonDecode` from `dart:convert`
-
----
-
-## 💡 Notes
-
-- The cache key is hardcoded as `CACHED_PRODUCTS`.
-- This class operates on models, not domain entities.
-- Ensure `ProductModel` has `toJson()` and `fromJson()` implemented.
-
----
-
-
+- [x] Implemented `ProductRemoteDataSourceImpl`
+- [x] Covered all methods with tests
+- [x] Pushed to GitHub

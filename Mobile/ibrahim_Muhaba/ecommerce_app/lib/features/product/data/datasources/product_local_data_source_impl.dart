@@ -13,8 +13,7 @@ class ProductLocalDataSourceImpl implements ProductLocalDataSource {
 
   @override
   Future<void> cacheProducts(List<ProductModel> products) async {
-    final productListJson =
-        jsonEncode(products.map((p) => p.toJson()).toList());
+    final productListJson = jsonEncode(products.map((p) => p.toJson()).toList());
     await sharedPreferences.setString(_cachedProductsKey, productListJson);
   }
 
