@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:mockito/mockito.dart';
 
+import '../../../../../lib/core/constants/api_constants.dart';
 import '../../../../../lib/features/product/data/datasources/product_remote_data_source_impl.dart';
 import '../../../../../lib/features/product/data/models/product_model.dart';
 
@@ -16,10 +17,8 @@ void main() {
 
   setUp(() {
     mockClient = MockHttpClient();
-    dataSource = ProductRemoteDataSourceImpl(client: mockClient, baseUrl: 'HTTP/');
+    dataSource = ProductRemoteDataSourceImpl(client: mockClient);
   });
-
-  final baseUrl = 'https://65f85c2cdf151452460f6d1b.mockapi.io/api/v1/products';
 
   group('getAllProducts', () {
     test('returns list of products on success', () async {
@@ -27,7 +26,7 @@ void main() {
         {'id': '1', 'name': 'Test Product', 'description': 'desc', 'price': 10.0}
       ];
 
-      when(mockClient.get(Uri.parse(baseUrl)))
+      when(mockClient.get(Uri.parse(ApiConstants.products)))
           .thenAnswer((_) async => http.Response(jsonEncode(responseJson), 200));
 
       final result = await dataSource.getAllProducts();
@@ -42,7 +41,7 @@ void main() {
       final id = '1';
       final productJson = {'id': id, 'name': 'Product', 'description': 'desc', 'price': 10.0};
 
-      when(mockClient.get(Uri.parse('$baseUrl/$id')))
+      when(mockClient.get(Uri.parse(ApiConstants.productById(id))))
           .thenAnswer((_) async => http.Response(jsonEncode(productJson), 200));
 
       final result = await dataSource.getProductById(id);
@@ -56,13 +55,13 @@ void main() {
     test('calls POST with correct body', () async {
       final product = const ProductModel(id: '3', name: 'New', description: 'desc', price: 20.0, imageUrl: 'HFBFK');
 
-      when(mockClient.post(Uri.parse(baseUrl),
+      when(mockClient.post(Uri.parse(ApiConstants.products),
               headers: anyNamed('headers'), body: anyNamed('body')))
           .thenAnswer((_) async => http.Response('', 201));
 
       await dataSource.addProduct(product);
 
-      verify(mockClient.post(Uri.parse(baseUrl),
+      verify(mockClient.post(Uri.parse(ApiConstants.products),
           headers: {'Content-Type': 'application/json'},
           body: jsonEncode(product.toJson())));
     });
@@ -72,13 +71,13 @@ void main() {
     test('calls PUT with correct body', () async {
       final product = const ProductModel(id: '1', name: 'Updated', description: 'desc', price: 25.0, imageUrl: 'IUHB');
 
-      when(mockClient.put(Uri.parse('$baseUrl/${product.id}'),
+      when(mockClient.put(Uri.parse(ApiConstants.productById(product.id)),
               headers: anyNamed('headers'), body: anyNamed('body')))
           .thenAnswer((_) async => http.Response('', 200));
 
       await dataSource.updateProduct(product);
 
-      verify(mockClient.put(Uri.parse('$baseUrl/${product.id}'),
+      verify(mockClient.put(Uri.parse(ApiConstants.productById(product.id)),
           headers: {'Content-Type': 'application/json'},
           body: jsonEncode(product.toJson())));
     });
@@ -88,12 +87,12 @@ void main() {
     test('calls DELETE with correct ID', () async {
       final id = '1';
 
-      when(mockClient.delete(Uri.parse('$baseUrl/$id')))
+      when(mockClient.delete(Uri.parse(ApiConstants.productById(id))))
           .thenAnswer((_) async => http.Response('', 200));
 
       await dataSource.deleteProduct(id);
 
-      verify(mockClient.delete(Uri.parse('$baseUrl/$id')));
+      verify(mockClient.delete(Uri.parse(ApiConstants.productById(id))));
     });
   });
 }

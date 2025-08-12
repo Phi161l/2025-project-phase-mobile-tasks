@@ -1,8 +1,10 @@
 import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../../../core/errors/exceptions.dart';
 import '../models/product_model.dart';
-import 'product_local_data_source.dart';
+import 'product_local_data_source.dart';  
 
 class ProductLocalDataSourceImpl implements ProductLocalDataSource {
   final SharedPreferences sharedPreferences;
@@ -39,8 +41,10 @@ class ProductLocalDataSourceImpl implements ProductLocalDataSource {
   @override
   Future<ProductModel> getCachedProductById(String id) async {
     final products = await getCachedProducts();
-    final product = products.firstWhere((p) => p.id == id,
-        orElse: () => throw Exception('Product not found'));
+    final product = products.firstWhere(
+      (p) => p.id == id,
+      orElse: () => throw CacheException('Product not found in cache'),
+    );
     return product;
   }
 
