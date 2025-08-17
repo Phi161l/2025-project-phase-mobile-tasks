@@ -116,7 +116,7 @@ void main() {
         remoteDataSource: FakeRemoteDataSource(),
         localDataSource: FakeLocalDataSource(),
         networkInfo: FakeNetworkInfo(true),  // connected
-        isConnected: true, 
+        // isConnected: true, 
       );
 
       final result = await repository.getAllProducts();
@@ -130,7 +130,7 @@ void main() {
         remoteDataSource: FakeRemoteDataSource(),
         localDataSource: FakeLocalDataSource(),
         networkInfo: FakeNetworkInfo(false), // disconnected
-        isConnected: true,
+        // isConnected: true,
       );
 
       final result = await repository.getAllProducts();
@@ -144,7 +144,7 @@ void main() {
         remoteDataSource: FakeRemoteDataSource(),
         localDataSource: FakeLocalDataSource(),
         networkInfo: FakeNetworkInfo(true),
-        isConnected: true,
+        // isConnected: true,
       );
 
       final result = await repository.getProductById('1');
@@ -157,7 +157,7 @@ void main() {
         remoteDataSource: FakeRemoteDataSource(),
         localDataSource: FakeLocalDataSource(),
         networkInfo: FakeNetworkInfo(false),
-        isConnected: true,
+        // isConnected: true,
       );
 
       final result = await repository.getProductById('2');
@@ -171,7 +171,7 @@ void main() {
         remoteDataSource: remote,
         localDataSource: FakeLocalDataSource(),
         networkInfo: FakeNetworkInfo(true),
-        isConnected: true,
+        // isConnected: true,
       );
 
       final newProduct = const ProductModel(
@@ -194,8 +194,9 @@ void main() {
         remoteDataSource: remote,
         localDataSource: FakeLocalDataSource(),
         networkInfo: FakeNetworkInfo(true),
-        isConnected: true,
+        // isConnected: true,
       );
+
 
       final updatedProduct = const ProductModel(
         id: '1',
@@ -218,7 +219,7 @@ void main() {
         remoteDataSource: remote,
         localDataSource: FakeLocalDataSource(),
         networkInfo: FakeNetworkInfo(true), 
-        isConnected: true,
+        // isConnected: true,
       );
 
       await repository.deleteProduct('1');

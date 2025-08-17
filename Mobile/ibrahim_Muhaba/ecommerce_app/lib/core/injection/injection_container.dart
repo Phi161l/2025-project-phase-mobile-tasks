@@ -54,7 +54,7 @@ Future<void> init() async {
       remoteDataSource: sl(),
       localDataSource: sl(),
       networkInfo: sl(),
-      isConnected: true, // optional, NetworkInfo is already injected
+      // isConnected: true,        // optional, NetworkInfo is already injected
     ),
   );
 
